@@ -29,11 +29,15 @@ public class ProductServiceController {
         Product honey = new Product();
       honey.setId("1");
       honey.setName("Honey");
+      honey.setQty("2");
+      honey.setPrice("12000");
       productRepo.put(honey.getId(), honey);
       
       Product almond = new Product();
       almond.setId("2");
       almond.setName("Almond");
+      almond.setQty("2");
+      almond.setPrice("12000");
       productRepo.put(almond.getId(), almond);
     }
     
@@ -50,10 +54,6 @@ public class ProductServiceController {
         if(productRepo.containsKey(product.getId())){
             return new ResponseEntity<>("Id prduct already exists!",HttpStatus.OK);
         }
-        //fungsi ketika id product kosong
-        else if(!productRepo.containsKey(product.getId())){
-                    return new ResponseEntity<>("please fill the Id Product",HttpStatus.OK);
-    }
         //fungsi untuk menambahkan product
         else{
             productRepo.put(product.getId(), product);

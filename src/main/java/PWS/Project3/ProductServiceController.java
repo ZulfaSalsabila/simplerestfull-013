@@ -21,34 +21,34 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author ROG
  */
-@RestController
-@ControllerAdvice
-public class ProductServiceController {
-    private static Map<String, Product> productRepo = new HashMap<>();
+@RestController//untuk menandakan suatu class adalah controller
+@ControllerAdvice//digunakan untuk menghandle exception dan error
+public class ProductServiceController {//membuat class product service controller
+    private static Map<String, Product> productRepo = new HashMap<>();//membuat objek hashmap untuk penyimpanan sementara
     static {
-        Product honey = new Product();
-      honey.setId("1");
-      honey.setName("Honey");
-      honey.setQty("2");
-      honey.setPrice("12000");
-      productRepo.put(honey.getId(), honey);
+        Product honey = new Product();//membuat objek untuk class product
+      honey.setId("1");//mengisi id pada object honey
+      honey.setName("Honey");//mengisi name pada object honey
+      honey.setQty("2");//mengisi qty pada object honey
+      honey.setPrice("12000");//mengisi price pada object honey
+      productRepo.put(honey.getId(), honey);//memanggil object honey dan menyimpannya pada product repo
       
-      Product almond = new Product();
-      almond.setId("2");
-      almond.setName("Almond");
-      almond.setQty("2");
-      almond.setPrice("12000");
-      productRepo.put(almond.getId(), almond);
+      Product almond = new Product();//membuat objek untuk class product
+      almond.setId("2");//mengisi id pada object almond
+      almond.setName("Almond");//mengisi name pada object almond
+      almond.setQty("2");//mengisi qty pada object almond
+      almond.setPrice("12000");//mengisi price pada object almond
+      productRepo.put(almond.getId(), almond);//memanggil object almond dan menyimpannya pada product repo
     }
     
-    //Method GET
-    @RequestMapping(value = "/products")
+    //Comment untuk Memanggil GET
+    @RequestMapping(value = "/products")//membuat request mapping untuk request method  pada class controller
     public ResponseEntity<Object> getProduct() {
-        return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
+        return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);//mengembalikan nilai productrepo
     }
     
-    //Method POST
-    @RequestMapping(value = "/products", method = RequestMethod.POST)
+    //Commant untuk Memanggil Method POST
+    @RequestMapping(value = "/products", method = RequestMethod.POST)//membuat request mapping untuk request method  pada class controller post
     public ResponseEntity<Object> createProduct(@RequestBody Product product) {
         //fungsi ketika id yang ingin dibuat sudah ada
         if(productRepo.containsKey(product.getId())){
@@ -61,25 +61,25 @@ public class ProductServiceController {
         }
     }
     //Method PUT
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)//membuat request mapping untuk request method  pada class controller put
     public ResponseEntity<Object> updateProduct(@PathVariable("id") String id, @RequestBody Product product) { 
-        if(!productRepo.containsKey(id))throw new ProductNotfoundException();
-      productRepo.remove(id);
-      product.setId(id);
-      productRepo.put(id, product);
-      return new ResponseEntity<>("Product is updated successsfully", HttpStatus.OK);
+        if(!productRepo.containsKey(id))throw new ProductNotfoundException();//membuat statment if jika data yang di edit belum ada
+      productRepo.remove(id);//untuk meremove id
+      product.setId(id);//mengeset kembali id
+      productRepo.put(id, product);//mengambil nilai id
+      return new ResponseEntity<>("Product is updated successsfully", HttpStatus.OK);//pesan jika data product sudah di update
     }
      
-    //Method Delete
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
+    //Comment ketika pesan exception yang sudah kita panggil dan ingin menghapus id
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)//membuat request mapping untuk request method  pada class controller delete
     public ResponseEntity<Object> delete(@PathVariable("id") String id) {
-        if(!productRepo.containsKey(id))throw new ProductNotfoundException();
-        productRepo.remove(id);
-        return new ResponseEntity<>("Product is deleted successfully", HttpStatus.OK);
+        if(!productRepo.containsKey(id))throw new ProductNotfoundException();//membuat statment jika data berhasil di hapus
+        productRepo.remove(id);//meremove productrepo melalui id
+        return new ResponseEntity<>("Product is deleted successfully", HttpStatus.OK);//menampilkan pesan jika data berhasil di hapus
     } 
     
-    @ExceptionHandler(value = ProductNotfoundException.class)
+    @ExceptionHandler(value = ProductNotfoundException.class)//membuat class exception jika product ada yang error/product tidak ada
     public ResponseEntity<Object> exception(ProductNotfoundException exception) {
-      return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);//mengambilkan nilai serta menampilkan pesan 
    }
 }
